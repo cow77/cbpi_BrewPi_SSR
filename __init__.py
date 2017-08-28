@@ -32,12 +32,13 @@ except Exception as e:
     pass
 
 
-blueprint = Blueprint('one_wire_bp_ssr', __name__)
+blueprint = Blueprint('one_wire_ssr', __name__)
 
 
 @cbpi.actor
 class BrewPiSSR(ActorBase):
     ##global root    # Needed to modify global copy of root
+    OWFS = False
 
     def getBPSSRs():
         try:
@@ -212,4 +213,10 @@ class BrewPiSSR(ActorBase):
             call(["modprobe", "w1-ds2413"])
         except Exception as e:
             pass
+
+
+@cbpi.initalizer()
+def init(cbpi):
+
+    cbpi.app.register_blueprint(blueprint, url_prefix='/api/one_wire_ssr')
 
