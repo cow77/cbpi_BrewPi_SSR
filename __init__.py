@@ -25,7 +25,7 @@ def ignored(*exceptions):
 
 
 try:
-    from pyowfs import Connection
+    from .pyowfs import Connection
     root = Connection('localhost:4304')
 except Exception as e:
     root = None
@@ -98,7 +98,7 @@ class BrewPiSSR(ActorBase):
                 s = root.find(address=actor)[0]
                 s.use_cache (0)
                 key = "PIO.BYTE"
-                if (s.has_key (key)):
+                if (key in s):
                     x = s.get(key)
                 st = list(x)[0]
                 if (st == 0x03):
@@ -171,7 +171,7 @@ class BrewPiSSR(ActorBase):
                     sta = self.getBPstate(actor,"A")
                     stb = state
                 ##key="PIO.BYTE"
-                if (s.has_key (key)):
+                if (key in s):
                     ##cbpi.app.logger.info("SSR: %s, port: %s, stata: %s, statb: %s" % (actor, port, sta, stb))
                     if (sta == "ON") and (stb =="ON"):
                         st = 0x03
@@ -207,7 +207,7 @@ class BrewPiSSR(ActorBase):
 
     @classmethod
     def init_global(cls):
-        print "GLOBAL %s ACTOR" % (cls.__name__)
+        print("GLOBAL %s ACTOR" % (cls.__name__))
         try:
             call(["modprobe", "w1-gpio"])
             call(["modprobe", "w1-ds2413"])
